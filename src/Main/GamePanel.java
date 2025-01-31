@@ -71,18 +71,21 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
+        int moveX = 0;
+        int moveY = 0;
 
-        if(keyH.upPressed == true){
-            playerY -= playerSpeed;
-        }
-        else if(keyH.downPressed == true){
-            playerY += playerSpeed;
-        }
-        else if(keyH.leftPressed == true){
-            playerX -= playerSpeed;
-        }
-        else if(keyH.rightPressed == true){
-            playerX += playerSpeed;
+        if (keyH.upPressed) moveY -= 1;
+        if (keyH.downPressed) moveY += 1;
+        if (keyH.leftPressed) moveX -= 1;
+        if (keyH.rightPressed) moveX += 1;
+
+        if (moveX != 0 && moveY != 0) {
+            // Normalize speed to maintain consistent movement in diagonals
+            playerX += (int) (playerSpeed / Math.sqrt(2) * moveX);
+            playerY += (int) (playerSpeed / Math.sqrt(2) * moveY);
+        } else {
+            playerX += playerSpeed * moveX;
+            playerY += playerSpeed * moveY;
         }
     }
 
