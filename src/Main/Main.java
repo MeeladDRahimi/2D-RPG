@@ -1,3 +1,4 @@
+//Credit: RyiSnow for the basic game development aspect, gameLogic is of my own design.
 package Main;
 
 import javax.swing.*;
