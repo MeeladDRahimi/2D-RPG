@@ -13,17 +13,23 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
+    public final int screenX;
+    public final int screenY;
+
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.screenWidth/2 - (gp.tileSize/2);
+        screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
-        x = 100;
-        y = 100;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
     }
@@ -48,33 +54,33 @@ public class Player extends Entity {
 
     public void update(){
         if(keyH.downPressed||keyH.upPressed|| keyH.leftPressed|| keyH.rightPressed){
-        int moveX = 0;
-        int moveY = 0;
+        int moveWorldX = 0;
+        int moveWorldY = 0;
 
         if (keyH.upPressed){
             direction = "up";
-            moveY -= 1;
+            moveWorldY -= 1;
         }
         if (keyH.downPressed){
             direction = "down";
-            moveY += 1;
+            moveWorldY += 1;
         }
         if (keyH.leftPressed){
             direction = "left";
-            moveX -= 1;
+            moveWorldX -= 1;
         }
         if (keyH.rightPressed){
             direction = "right";
-            moveX += 1;
+            moveWorldX += 1;
         }
 
-        if (moveX != 0 && moveY != 0) {
+        if (moveWorldX != 0 && moveWorldY != 0) {
             // Normalize speed to maintain consistent movement in diagonals
-            x += (int) (speed / Math.sqrt(2) * moveX);
-            y += (int) (speed / Math.sqrt(2) * moveY);
+            worldX += (int) (speed / Math.sqrt(2) * moveWorldX);
+            worldY += (int) (speed / Math.sqrt(2) * moveWorldY);
         } else {
-            x += speed * moveX;
-            y += speed * moveY;
+            worldX += speed * moveWorldX;
+            worldY += speed * moveWorldY;
         }
         spriteCounter++;
         if(spriteCounter > 12){
@@ -124,6 +130,6 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawImage(image,x,y,gp.tileSize,gp.tileSize,null);
+        g2.drawImage(image,screenX,screenY,gp.tileSize,gp.tileSize,null);
     }
 }
